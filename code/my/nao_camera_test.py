@@ -80,18 +80,18 @@ def findRedBallUseTop():
     captureDevice = g_camera.subscribeCamera(
         name, AL_kTopCamera, AL_kQVGA, AL_kBGRColorSpace, 10)
 
-    for times in xrange(10):
-        print times
+    for times in range(10):
+        print(times)
         image = np.zeros((height, width, 3), np.uint8)
         # get image
         result = g_camera.getImageRemote(captureDevice)
 
         if result is None:
-            print 'cannot capture.'
+            print ('cannot capture.')
 
         elif result[6] is None:
-            print 'no image data string.'
-            print result[6]
+            print ('no image data string.')
+            print (result[6])
 
         else:
             # translate value to mat

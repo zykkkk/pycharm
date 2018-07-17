@@ -9,13 +9,24 @@ import sys
 # with 2*2 kernel can fand 3 4 5 6 7 12 13 14 15 16 17
 # with 4*4 kernel can find 8 11
 # with no kernel just test8.png cant find
+
+a=2
+def mohu(res,x):
+    res2 = cv2.blur(res, x)
+    # res2 = cv2.dilate(res2, kernel_4, iterations=1)
+    res2 = cv2.erode(res2, kernel_4, iterations=1)  # erode 侵蝕 being small
+    res2 = cv2.erode(res2, kernel_4, iterations=1)  # erode 侵蝕 being small
+    res2 = cv2.dilate(res2, kernel_4, iterations=1)
+    res2 = cv2.dilate(res2, kernel_4, iterations=1)
+
+    return res2
 if __name__ == '__main__':
     # print(sys.argv)
     # Img = cv2.imread('/home/sl/my/pycharm_workspaces/naoproj/find_color/test_picture/color.jpg')  # 读入一幅图像
     # Img = cv2.imread('../../nao_pic/test3.png')
     # Img = cv2.imread('../../nao_pic/test4.png')
     # Img = cv2.imread('../../nao_pic/test6.png')
-    Img = cv2.imread('../../nao_pic/test11.png')
+    Img = cv2.imread('../../../nao_pic/test%d.png' %a)
     # Img = cv2.imread('../../nao_pic/test8.png')
     # Img = cv2.imread('../../nao_pic/test22.png')
     # Img = cv2.imread('/home/sl/my/pycharm_workspaces/naoproj/find_color/test_picture/yellow.png')  # 读入一幅图像
@@ -47,13 +58,9 @@ if __name__ == '__main__':
         # yellow = [[16, 0, 150], [50, 255, 255]]  # test13.png
         # yellow = [[14, 0, 200], [40, 85, 255]]  #  with 2*2 kernel_4  2*2 kernel 13 14 15 16 17
         # yellow = [[20, 25, 46], [40, 85, 255]]  #18 19\
-
-
         # yellow = [[16, 0, 180], [50, 85, 255]]  # bright 3 4 5 12 13 14 15 16 17 21 22  use 2*2 kernel
         # yellow = [[14, 0, 0], [28, 115, 220]]  # not bright 6 7  use 4*4 kernel
         yellow = [[14, 0, 0], [40, 115, 220]]  # not bright 8 11 12 18 19   use 4*4 kernel   9 and 10 and 20 dont should find
-
-
         # yellow = [[14, 0, 160], [40, 115, 220]]  # for 11
         # not bright LH=14 HH=28 or 50
         # need to better 11
@@ -68,10 +75,20 @@ if __name__ == '__main__':
         mask = cv2.inRange(HSV, Lower, Upper)
         cv2.imshow('mask', mask)
         # 下面四行是用卷积进行滤波
-        erosion = cv2.erode(mask, kernel_4, iterations=1)
+        erosion = cv2.erode(mask, kernel_4, iterations=1)  # erode 侵蝕 being small
         erosion = cv2.erode(erosion, kernel_4, iterations=1)
-        dilation = cv2.dilate(erosion, kernel_4, iterations=1)
+        dilation = cv2.dilate(erosion, kernel_4, iterations=1)  # 膨脹 being big
         dilation = cv2.dilate(dilation, kernel_4, iterations=1)
+#
+        dilation = cv2.dilate(erosion, kernel_4, iterations=1)  # 膨脹 being big
+        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
+        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
+        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
+        erosion = cv2.erode(mask, kernel_4, iterations=1)  # erode 侵蝕 being small
+        erosion = cv2.erode(erosion, kernel_4, iterations=1)
+        erosion = cv2.erode(erosion, kernel_4, iterations=1)
+        erosion = cv2.erode(erosion, kernel_4, iterations=1)
+#
         # cv2.imshow('dilation', dilation)
         # target是把原图中的非目标颜色区域去掉剩下的图像
         target = cv2.bitwise_and(Img, Img, mask=dilation)

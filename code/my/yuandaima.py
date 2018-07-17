@@ -460,7 +460,7 @@ def searchLandmarkInRight():
         # elif times == 0:
         #     headYawAngle = headYawAngle + (55 * almath.TO_RAD)
         # elif times == 1:
-        headYawAngle = headYawAngle + (39 * almath.TO_RAD)
+        headYawAngle += 39 * almath.TO_RAD
         # if headYawAngle
         # else:
         #     headYawAngle = headYawAngle - (20 * almath.TO_RAD)
@@ -1382,6 +1382,7 @@ def calAdjustY(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2
     :return: 需要修正的Y值
     '''
     logging.debug("--------------------------calAdjustY---------------------")
+    # 求两个向量的夹角
     angleForBall = math.acos((distance2Ball - distance2Mark * math.cos(abs(angleForLandMark))) / distanceFromBall2Mark)
     logging.debug("angleForBall ---> " + str(angleForBall))
     distanceY = math.tan(abs(angleForBall - math.pi / 2)) * distance2Ball
@@ -1397,13 +1398,13 @@ def calAdjustY(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2
 
 
 def calAdjustTheta(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2Mark):
-    '''
+    """
     根据nao与球的距离，nao与landmark的距离以及角度，计算形成直角需要修正的Y值
     :param distance2Ball: nao与landmark的距离 cm
     :param distance2Mark: ao与球的距离 cm
     :param angleForLandMark: nao与landmark的角度 弧度值表示
     :return: 需要修正的Y值
-    '''
+    """
 
     logging.debug("distanceFromBall2Mark:  " + str(distanceFromBall2Mark))
     angleForBall = math.acos((distance2Ball - distance2Mark * math.cos(abs(angleForLandMark))) / distanceFromBall2Mark)
@@ -1773,6 +1774,8 @@ def findAndHitBall(changci=1):
                         break
                 # 一些修正：根据实际情况进行调整
                 # if headYawAngle < 0:
+                # robotToLandmarkData[0] = distance
+                # robotToLandmarkData[1] = markWithHeadAnger
                 if robotToLandmarkData[1] > 0:
                     if distance2Ball < 13:
                         distance2Ball = 13
@@ -2135,7 +2138,7 @@ def findAndHitBall2(changci=1):
                     # move(theta=adjustTheta )
                     # 7.5 击球
                     # 根据位置的不同决定击球方式
-                    if distanceFromBall2Mark != None:
+                    if distanceFromBall2Mark is not None:
                         if robotToLandmarkData[1] > 0:
                             outShotBall(120)
                         elif robotToLandmarkData[1] < 0:

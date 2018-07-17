@@ -340,7 +340,7 @@ def trackBall(headPitch=0):
                 coord = g_tracker.getTargetPosition(2)
             # 将坐标转换为cm
             for i in range(len(coord)):
-                coord[i] = coord[i] * 100
+                coord[i] *= 100
             # 输出坐标
             # logging.debug("x = " + str(coord[0]) + "  y = " + str(coord[1]) + " z = " + str(coord[2]))
             # 获取头转的角度
@@ -552,7 +552,7 @@ def searchLandmarkInLeft():
         time.sleep(3)
         markData = g_memory.getData("LandmarkDetected")
         # 找到landmark
-        if (markData and isinstance(markData, list) and len(markData) >= 2):
+        if markData and isinstance(markData, list) and len(markData) >= 2:
             # 提示
             g_tts.say("find landmark!")
             # 置标志为rue
@@ -627,7 +627,7 @@ def searchLandmarkInLeft():
         # elif times == 0:
         #     headYawAngle = headYawAngle + (55 * almath.TO_RAD)
         # elif times == 1:
-        headYawAngle = headYawAngle + addAngle
+        headYawAngle += addAngle
         # if headYawAngle
         # else:
         #     headYawAngle = headYawAngle - (20 * almath.TO_RAD)
@@ -647,12 +647,12 @@ def searchLandmarkInLeft():
 
 # -------------找到球的一些行为--------------
 def actionAfterFirstFindBall(distance, headYawAngle):
-    '''
+    """
     找到球后，正对球，调整距离
     :param distance: NAO与球的距离
     :param headYawAngle: NAO与球的角度
     :return:
-    '''
+    """
     logging.info("-----------------------actionAfterFirstFindBall----------------")
     # 正对
     move(theta=headYawAngle)
@@ -706,13 +706,13 @@ def calDistanceFromBall2Mark(distance2Ball, distance2Mark, angleForLandMark):
 
 
 def calAdjustY(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2Mark):
-    '''
+    """
     根据nao与球的距离，nao与landmark的距离以及角度，计算形成直角需要修正的Y值
     :param distance2Ball: nao与landmark的距离 cm
     :param distance2Mark: ao与球的距离 cm
     :param angleForLandMark: nao与landmark的角度 弧度值表示
     :return: 需要修正的Y值
-    '''
+    """
     logging.debug("--------------------------calAdjustY---------------------")
     angleForBall = math.acos((distance2Ball - distance2Mark * math.cos(abs(angleForLandMark))) / distanceFromBall2Mark)
     logging.debug("angleForBall ---> " + str(angleForBall))
@@ -790,7 +790,7 @@ def findAndHitBall2(changci=1):
 
                 # 7.3 调整距离和角度
                 # time.sleep(0.5)
-                if adjustY < 28 and adjustY > -28:
+                if 28 > adjustY > -28:
                     move(y=adjustY)
                 elif adjustY > 0:
                     move(y=28)
@@ -904,11 +904,11 @@ def outShotBall(distance):
 
 
 def firstClosingForHitBall(angleForLandMark):
-    '''
+    """
     根据与landmark的角度的正负决定击球方式，先确定击球点在进行调整
     :param angleForLandMark:
     :return:
-    '''
+    """
     # 1、重新获取距离
     # distance2Ball, headYawAngle, ballCoord = trackBall()
     # move(theta=headYawAngle)
@@ -942,7 +942,7 @@ def firstClosingForHitBall(angleForLandMark):
             # 微调y
             # 重新获取与球相关的值
             distance2Ball, headYawAngle, ballCoord = trackBallNoHead(18)
-            while (distance2Ball > 15 or ballCoord[2] > 30):
+            while distance2Ball > 15 or ballCoord[2] > 30:
                 distance2Ball, headYawAngle, ballCoord = trackBallNoHead(18)
 
             if (1 < ballCoord[1] < 6) or (t % 2 == 1):
@@ -967,7 +967,7 @@ def firstClosingForHitBall(angleForLandMark):
             # 微调y
             # 重新获取与球相关的值
             distance2Ball, headYawAngle, ballCoord = trackBallNoHead(18)
-            while (distance2Ball > 15 or ballCoord[2] > 30):
+            while distance2Ball > 15 or ballCoord[2] > 30:
                 distance2Ball, headYawAngle, ballCoord = trackBallNoHead(18)
             if (2 < ballCoord[1] < 4) or (t % 2 == 1):
                 if 7.8 < distance2Ball < 9.5:
@@ -1019,7 +1019,7 @@ def trackBallNoHead(headPitch=0):
                 coord = g_tracker.getTargetPosition(2)
             # 将坐标转换为cm
             for i in range(len(coord)):
-                coord[i] = coord[i] * 100
+                coord[i] *= 100
             # 输出坐标
             # logging.debug("x = " + str(coord[0]) + "  y = " + str(coord[1]) + " z = " + str(coord[2]))
             # 获取头转的角度
@@ -1193,10 +1193,10 @@ def getRealDisForBall(x, y, z, yaw, pitch):
 
 # ------------上摄像头找球，使用opencv部分，此处不做注释-------------------
 def searchBallUseTop():
-    '''
+    """
     适用上摄像头进行找球
     :return:
-    '''
+    """
     initAngle = -80
     endAngle = 80
     currAngle = initAngle
@@ -1218,19 +1218,18 @@ def searchBallUseTop():
     headYawAngle = g_motion.getAngles("HeadYaw", True)[0]
     angle = (angle + headYawAngle) * almath.TO_DEG
 
-    logging.info("distance: %f" % (distance) + "______________angle: %f" % (angle * almath.TO_DEG))
+    logging.info("distance: %f" % distance + "______________angle: %f" % (angle * almath.TO_DEG))
     # move(theta=angle * almath.TO_DEG)
     return distance, angle
 
 
 def findRedBallUseTop():
-    '''
+    """
     使用上摄像头找球
     :return:
-    '''
+    """
     distance = 0
     angle = 0
-    global g_videoDevice
     g_videoDevice = ALProxy("ALVideoDevice", IP, Port)
     # get NAOqi module proxy
     # videoDevice = ALProxy('ALVideoDevice', ip_addr, port_num)
@@ -1258,10 +1257,10 @@ def findRedBallUseTop():
         # get image
         result = g_videoDevice.getImageRemote(captureDevice)
 
-        if result == None:
+        if result is None:
             print 'cannot capture.'
 
-        elif result[6] == None:
+        elif result[6] is None:
             print 'no image data string.'
             print result[6]
 
@@ -1336,7 +1335,7 @@ def findRedBallUseTop():
 
                     # 过滤太远的噪点,190cm以后的不用识别,主要过滤场外的复杂场景
                     if y <= height / 2:
-                        n = n + 1
+                        n += 1
                         if n == len(contours) and times > 5:
                             FindBall = 0
                             print "Not find ball"
@@ -1351,7 +1350,6 @@ def findRedBallUseTop():
                         if minContourArea < contoursArea <= maxContourArea:
                             useSensors = False
                             headAngle = g_motion.getAngles('HeadPitch', useSensors)
-
                             center_x = x + w / 2
                             center_y = y + h / 2
                             distance, angle = calDistanceAndAngle(center_x, center_y, width, height, headAngle[0],

@@ -6,8 +6,8 @@ import time
 import logging
 import sys
 
+IP = '192.168.1.102'
 # IP = '172.16.55.80'
-IP = '172.16.55.80'
 Port = 9559
 
 # 步伐参数配置
@@ -309,7 +309,8 @@ def searchLandmark(turn='left'):
     else:
         a = 0
 
-    g_tts.say('begin to find landmark in %s' %turn)
+    # g_tts.say('begin to find landmark in %s' %turn)
+    print ('begin to find landmark in %s' %turn)
 
     for i in range(8):
         j = i / 4
@@ -323,20 +324,24 @@ def searchLandmark(turn='left'):
         g_motion.angleInterpolationWithSpeed("HeadYaw", anger, 0.1)   #
         time.sleep(3)
         markData = g_memory.getData("LandmarkDetected")
+
         if markData and isinstance(markData, list) and len(markData) >= 2:
             # 提示
-            g_tts.say("find landmark!")
+            # g_tts.say("find landmark!")
+            print ("find landmark!")
             # 置标志为rue
             isFindLandmark = True  # landmark识别符1代表识别到，0代表未识别到。
             # Retrieve landmark center position in radians.
             # 获取数据
             alpha = markData[1][0][0][1]
             beta = markData[1][0][0][2]
-            landmarkWidthInPic = markData[1][0][0][3]
+            landmarkWidthInPic = markData[1][0][0][3]   # Retrieve landmark angular size in radians.
+            print ('there',alpha,beta,landmarkWidthInPic)
 
             # 获取头转动角度
-            headAngle = g_motion.getAngles("HeadYaw", True)
-            markWithHeadAngle = alpha + headAngle[0]  # landmark相对机器人头的角度
+            headAngle = g_motion.getAngles("HeadYaw", True)  # 视觉中心
+            markWithHeadAngle = alpha + headAngle[0]  # landmark相对机器人头的角度  ,视觉中心 + 视觉中的角度  ,为毛不需要上下的角度
+            print('markWithHeadAngle:  ',markWithHeadAngle)
             # 头部正对landmark
             g_motion.angleInterpolationWithSpeed("HeadYaw", markWithHeadAngle, 0.2)
 
@@ -350,17 +355,21 @@ def searchLandmark(turn='left'):
 
             # 计算指向landmark的旋转矩阵
             cameraToLandmarkRotationTransform = almath.Transform_from3DRotation(0, beta, alpha)
+            print('cameraToLandmarkRotationTransform:  ',cameraToLandmarkRotationTransform)
 
             # 摄像头到landmark的矩阵
             cameraToLandmarkTranslationTransform = almath.Transform(distanceFromCameraToLandmark, 0, 0)
+            print('cameraToLandmarkTranslationTransform: ',cameraToLandmarkTranslationTransform)
 
             # 机器人到landmark的矩阵
             robotToLandmark = robotToCamera * cameraToLandmarkRotationTransform * cameraToLandmarkTranslationTransform
+            print('robotToLandmark:  ',robotToLandmark)
 
-            x = robotToLandmark.r1_c4
+            x = robotToLandmark.r1_c4  # 1row  4cloumn
             y = robotToLandmark.r2_c4
             z = robotToLandmark.r3_c4
             distance = math.sqrt(x ** 2 + y * y) * 100
+            print ('distance  ',distance)
 
             markWithHeadAngle = round(markWithHeadAngle, 2)
             # 将数据存入列表
@@ -374,7 +383,8 @@ def searchLandmark(turn='left'):
             g_motion.angleInterpolationWithSpeed("HeadYaw", 0.0, 0.2)
             return robotToLandmarkData, isFindLandmark
         else:
-            g_tts.say('not find landmark %d time' % i)
+            # g_tts.say('not find landmark %d time' % i)
+            print ('not find landmark %d time' %i)
 
     g_tts.say("landmark is not in sight,over")
     return -1, -1
@@ -388,8 +398,8 @@ if __name__ == '__main__':
     g_motion.wakeUp()
     # find_ball()
     searchLandmark(turn='left')
-    searchLandmark(turn='right')
-    g_tts.say('i am going to rest')
+    # searchLandmark(turn='right')
+    # g_tts.say('i am going to rest')
     g_motion.rest()
     # g_posture.goToPosture("StandInit", 0.5)
     # g_motion.setStiffnesses("Head", 1.0)
