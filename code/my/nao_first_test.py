@@ -32,7 +32,7 @@ g_camera = ALProxy("ALVideoDevice", IP, Port)  # 摄像头管理模块
 g_tracker = ALProxy("ALTracker", IP, Port)  # 追踪模块
 
 
-def naoInit():  #
+def naoInit():  # 开始前机器人的初始化
     """开始前机器人的初始化"""
     # 1、站起来
     # g_motion.wakeUp()
@@ -53,7 +53,7 @@ def naoInit():  #
     print('init over')
 
 
-def firstHitBallForOne():
+def firstHitBallForOne():  # 第一场第一次击球
     """
         第一场第一次击球
     """
@@ -63,7 +63,7 @@ def firstHitBallForOne():
     print('hit over')
 
 
-def actionBeforeMove():
+def actionBeforeMove():  # 走路前的拿杆动作 ,打完球后收杆
     """
     走路前的拿杆动作 ,打完球后收杆
     """
@@ -354,7 +354,7 @@ def searchLandmark(turn='left'):
             robotToCamera = almath.Transform(transformList)
 
             # 计算指向landmark的旋转矩阵
-            cameraToLandmarkRotationTransform = almath.Transform_from3DRotation(0, beta, alpha)
+            cameraToLandmarkRotationTransform = almath.Transform_from3DRotation(0, beta, alpha)  # anger x ,anger y, anger z
             print('cameraToLandmarkRotationTransform:  ',cameraToLandmarkRotationTransform)
 
             # 摄像头到landmark的矩阵

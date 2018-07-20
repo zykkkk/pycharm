@@ -85,14 +85,14 @@ def actionBeforeMove():
 
 # 移动函数，包装了api的移动，同时添加了一些修正
 def move(x=0.0, y=0.0, theta=0.0, config=g_moveConfig):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     g_motion.moveInit()
     try:
@@ -144,14 +144,14 @@ def move(x=0.0, y=0.0, theta=0.0, config=g_moveConfig):
 
 
 def move2(x=0.0, y=0.0, theta=0.0, config=g_moveConfig1):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     # 如果传入为小数，强转
     g_motion.moveInit()
@@ -202,14 +202,14 @@ def move2(x=0.0, y=0.0, theta=0.0, config=g_moveConfig1):
 
 
 def moveForThree(x=0.0, y=0.0, theta=0.0, config=g_moveConfig2):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     # 如果传入为小数，强转
     g_motion.moveInit()
