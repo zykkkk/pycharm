@@ -1,7 +1,9 @@
+# coding=utf-8
 import math
 import cv2
 import time
-# import almath
+import almath
+from naoqi import ALProxy
 import sys
 
 # for i in xrange(7):
@@ -51,5 +53,28 @@ import sys
 # a=math.pi
 # print (round(a,3))
 
-a=(1,2,3)
-print a[1]
+# a=(1,2,3)
+# print a[1]
+
+# headYawAngle = -110 * almath.TO_RAD  # 摆头角度，从右往左扫
+# headYawAngle=-110
+# times = 0
+# while times < 2:
+#     anger=headYawAngle
+#     print anger
+#     if headYawAngle * almath.TO_DEG > 130:
+#         headYawAngle = -130 * almath.TO_RAD  # 摆头角度，从右往左扫
+#         times += 1
+#         continue
+#     headYawAngle += 39 * almath.TO_RAD
+
+headYawAngle=-110
+times = 0
+while times < 2:
+    anger=headYawAngle
+    print anger,
+    if headYawAngle > 130:
+        headYawAngle = -130 # 摆头角度，从右往左扫
+        times += 1
+        continue
+    headYawAngle += 39

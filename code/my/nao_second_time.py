@@ -399,6 +399,7 @@ def trackBall(headPitch=0):
 
 
 # ----------------------------Landmark相关---------------------------------
+# 扫描顺序为 -110 -71 -32 7 46 85 124 163 -130 -91 -52 -13 26 65 104 143  往左为正
 def searchLandmarkInRight():
     """
     搜索Landmark，返回
@@ -708,6 +709,7 @@ def calDistanceFromBall2Mark(distance2Ball, distance2Mark, angleForLandMark):
 def calAdjustY(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2Mark):
     """
     根据nao与球的距离，nao与landmark的距离以及角度，计算形成直角需要修正的Y值
+    :param distanceFromBall2Mark: 球和landmark的距离
     :param distance2Ball: nao与landmark的距离 cm
     :param distance2Mark: ao与球的距离 cm
     :param angleForLandMark: nao与landmark的角度 弧度值表示
