@@ -385,7 +385,7 @@ def searchLandmarkInRight():
         time.sleep(3)
         markData = g_memory.getData("LandmarkDetected")
         # 找到landmark
-        if (markData and isinstance(markData, list) and len(markData) >= 2):
+        if markData and isinstance(markData, list) and len(markData) >= 2:
             # 提示
             g_tts.say("find landmark!")
             # 置标志为rue

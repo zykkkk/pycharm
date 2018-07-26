@@ -1352,7 +1352,7 @@ def findRedBallUseTop():
                         if minContourArea < contoursArea <= maxContourArea:
                             useSensors = False
                             headAngle = g_motion.getAngles('HeadPitch', useSensors)
-                            center_x = x + w / 2
+                            center_x = x + w / 2    # 获取球的球心
                             center_y = y + h / 2
                             distance, angle = calDistanceAndAngle(center_x, center_y, width, height, headAngle[0],
                                                                   AL_kTopCamera)

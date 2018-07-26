@@ -7,6 +7,8 @@ import cv2
 # 获取HSV值
 def my_event(event,x,y,flags,param):
     if event==cv2.EVENT_FLAG_LBUTTON:
+        print
+        print x,y
         print('RGB:',frame[x,y],'   ','HSV:',HSV[x,y])
 
 cap = cv2.VideoCapture(0)
