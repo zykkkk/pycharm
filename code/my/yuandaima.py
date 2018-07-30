@@ -63,7 +63,7 @@ def logConfig(logName):
 
 # 初始化
 def naoInit(logName="no log name", IP="127.0.0.1"):
-    '''开始前机器人的初始化'''
+    """开始前机器人的初始化"""
     try:
         loadModule(IP)
         logConfig(logName)
@@ -94,7 +94,7 @@ def naoInit(logName="no log name", IP="127.0.0.1"):
 
 
 def naoInitForTest(logName="someTest", IP="127.0.0.1"):
-    '''开始前机器人的初始化'''
+    """开始前机器人的初始化"""
     try:
         loadModule(IP)
         logConfig(logName)
@@ -143,8 +143,8 @@ def actionBeforeMove():
 
 
 def actionBeforeMoveForTwo():
-    '''   走路前的拿杆动作，第二场的，减少右手与身体的间隔，避免碰到障碍物
-    '''
+    """   走路前的拿杆动作，第二场的，减少右手与身体的间隔，避免碰到障碍物
+    """
     global g_motion
     # // moveInit动作
     g_motion.moveInit()
@@ -164,14 +164,14 @@ def actionBeforeMoveForTwo():
 
 # 移动函数，包装了api的移动，同时添加了一些修正
 def move(x=0.0, y=0.0, theta=0.0, config=g_moveConfig):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     g_motion.moveInit()
     try:
@@ -223,14 +223,14 @@ def move(x=0.0, y=0.0, theta=0.0, config=g_moveConfig):
 
 
 def move2(x=0.0, y=0.0, theta=0.0, config=g_moveConfig1):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     # 如果传入为小数，强转
     g_motion.moveInit()
@@ -281,14 +281,14 @@ def move2(x=0.0, y=0.0, theta=0.0, config=g_moveConfig1):
 
 
 def moveForThree(x=0.0, y=0.0, theta=0.0, config=g_moveConfig2):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     # 如果传入为小数，强转
     g_motion.moveInit()
@@ -356,10 +356,10 @@ def stop(t=2):
 
 # ----------------------------Landmark相关---------------------------------
 def searchLandmarkInRight():
-    '''
+    """
     搜索Landmark，返回
     :return:landmarkData(角度，距离),isFindLandMark
-    '''
+    """
     global g_motion, g_landmarkDetection, g_camera
     isFindLandmark = False  # landmark识别符0代表识别到，1代表未识别到。
     robotToLandmarkData = []
@@ -602,10 +602,10 @@ def searchLandmarkInLeft():
 
 
 def searchLandmarkForAvoid():
-    '''
+    """
     搜索Landmark，返回
     :return:landmarkData(角度，距离),isFindLandMark
-    '''
+    """
     global g_motion, g_landmarkDetection, g_camera
     isFindLandmark = False  # landmark识别符0代表识别到，1代表未识别到。
     robotToLandmarkData = []
@@ -913,7 +913,7 @@ def trackBall(headPitch=0):
 
 
 def getRealDisForBall(x, y, z, yaw, pitch):
-    '''
+    """
     根据api返回的数据，计算真正的距离
     :param x:
     :param y:
@@ -921,7 +921,7 @@ def getRealDisForBall(x, y, z, yaw, pitch):
     :param yaw:
     :param pitch:
     :return:
-    '''
+    """
     # 初始化一些数据
     z = abs(z)
     # 获取
@@ -1007,10 +1007,10 @@ def getRealDisForBall(x, y, z, yaw, pitch):
 
 # ------------上摄像头找球，使用opencv部分，此处不做注释-------------------
 def searchBallUseTop():
-    '''
+    """
     适用上摄像头进行找球
     :return:
-    '''
+    """
     initAngle = -80
     endAngle = 80
     currAngle = initAngle
@@ -1056,12 +1056,12 @@ def calDistanceAndAngle(cxnum, rynum, colsum, rowsum, Head_angle, cameraID):
     Picture_angle = disty * 47.64 / 240
 
     if cameraID == 0:
-        h = 0.463
+        h = 0.463  # 下摄像头距离地面高度
         Camera_angle = 4.7145
         print "Head_angle:", Head_angle
 
     else:
-        h = 0.57
+        h = 0.57  # 上摄像头距离地面高度,单位米
         Camera_angle = 38
 
     print h, Picture_angle, Camera_angle
@@ -1080,10 +1080,10 @@ def calDistanceAndAngle(cxnum, rynum, colsum, rowsum, Head_angle, cameraID):
 
 
 def findRedBallUseTop():
-    '''
+    """
     使用上摄像头找球
     :return:
-    '''
+    """
     distance = 0
     angle = 0
     global g_videoDevice
@@ -1236,12 +1236,12 @@ def findRedBallUseTop():
 
 # -------------找到球的一些行为--------------
 def actionAfterFirstFindBall(distance, headYawAngle):
-    '''
+    """
     找到球后，正对球，调整距离
     :param distance: NAO与球的距离
     :param headYawAngle: NAO与球的角度
     :return:
-    '''
+    """
     logging.info("-----------------------actionAfterFirstFindBall----------------")
     # 正对
     move(theta=headYawAngle)
@@ -1273,11 +1273,11 @@ def actionAfterFirstFindBall(distance, headYawAngle):
 
 
 def firstClosingForHitBall(angleForLandMark):
-    '''
+    """
     根据与landmark的角度的正负决定击球方式，先确定击球点在进行调整
     :param angleForLandMark:
     :return:
-    '''
+    """
     # 1、重新获取距离
     # distance2Ball, headYawAngle, ballCoord = trackBall()
     # move(theta=headYawAngle)
@@ -1356,13 +1356,13 @@ def firstClosingForHitBall(angleForLandMark):
 # 利用了一些简单的三角函数
 def calDistanceFromBall2Mark(distance2Ball, distance2Mark, angleForLandMark):
     # type: (float, float, float) -> float
-    '''
+    """
     根据nao与球的距离，nao与landmark的距离以及角度，计算球和landmark的距离
     :param distance2Mark: ao与球的距离 cm
     :param angleForLandMark: nao与landmark的角度 弧度值表示
     :param distance2Ball: nao与landmark的距离 cm
     :return:球和landmark的距离
-    '''
+    """
     logging.debug("--------------------------calDistanceFromBall2Mark---------------------")
     logging.info("distance2Ball:: " + str(distance2Ball))
     logging.info("distance2Mark:: " + str(distance2Mark))
@@ -1374,13 +1374,13 @@ def calDistanceFromBall2Mark(distance2Ball, distance2Mark, angleForLandMark):
 
 
 def calAdjustY(distance2Ball, distance2Mark, angleForLandMark, distanceFromBall2Mark):
-    '''
+    """
     根据nao与球的距离，nao与landmark的距离以及角度，计算形成直角需要修正的Y值
     :param distance2Ball: nao与landmark的距离 cm
     :param distance2Mark: ao与球的距离 cm
     :param angleForLandMark: nao与landmark的角度 弧度值表示
     :return: 需要修正的Y值
-    '''
+    """
     logging.debug("--------------------------calAdjustY---------------------")
     # 求两个向量的夹角
     angleForBall = math.acos((distance2Ball - distance2Mark * math.cos(abs(angleForLandMark))) / distanceFromBall2Mark)
@@ -1456,9 +1456,9 @@ def outShotBall(distance):
 
 # ------第一场-----------
 def firstHitBallForOne():
-    '''
+    """
         第一场第一次击球
-    '''
+    """
     global g_motion, g_memory
     # 触摸右手击球
     while True:
@@ -1477,9 +1477,9 @@ def firstHitBallForOne():
 
 
 def firstHitBallForOne2():
-    '''
+    """
         第一场第一次击球
-    '''
+    """
     global g_motion, g_memory
     # 触摸右手击球
     while True:
@@ -1494,9 +1494,9 @@ def firstHitBallForOne2():
 
 
 def firstHitBallForTest():
-    '''
+    """
         第一场第一次击球
-    '''
+    """
     global g_motion, g_memory
     # 触摸右手击球
     while True:
@@ -1509,9 +1509,9 @@ def firstHitBallForTest():
 
 # ------第二场-----------
 def firstHitBallForTwo():
-    '''
+    """
     第二场第一次击球
-    '''
+    """
     global g_motion, g_memory
     time.sleep(1)
     g_motion.angleInterpolationWithSpeed("LWristYaw", -0.1, 0.05)
@@ -1529,9 +1529,9 @@ def firstHitBallForTwo():
 
 
 def firstHitBallForTwo2():
-    '''
+    """
     第二场第一次击球
-    '''
+    """
     global g_motion, g_memory
     time.sleep(1)
     g_motion.angleInterpolationWithSpeed("LWristYaw", -0.1, 0.05)
@@ -1551,7 +1551,7 @@ def firstHitBallForTwo2():
 
 # ------第三场-----------
 def firstHitBallForThree():
-    ''' 第三场第一次击球 '''
+    """ 第三场第一次击球 """
     global g_motion, g_memory
     # 触摸右手击球
     while True:
@@ -1563,7 +1563,7 @@ def firstHitBallForThree():
 
 
 def secondHitBallForThree():
-    '''第三场第二次击球'''
+    """第三场第二次击球"""
     global g_motion
     # 出杆
     # // 第二次击球的准备动作（超远击球）
@@ -1584,7 +1584,7 @@ def secondHitBallForThree():
 
 
 def secondHitBallForThree2():
-    '''第三场第二次击球'''
+    """第三场第二次击球"""
     global g_motion
     # 出杆
     # // 第二次击球的准备动作（超远击球）
@@ -1681,14 +1681,14 @@ def closingForHitBallForThree():
 
 
 def move3(x=0.0, y=0.0, theta=0.0, config=g_moveConfig):
-    '''
+    """
     NAO移动：以FRAME_ROBOT坐标系为参照，theta为角度
     :param x: 前进后退 单位cm
     :param y: 左右移动 cm
     :param theta: 旋转角度，往左为正，单位度数
     :param config: 行走参数配置
     :return:
-    '''
+    """
     global g_motion
     # 如果传入为小数，强转
     try:
@@ -2300,7 +2300,7 @@ def findAndHitBall2_2(changci=1):
 # -------主函数部分------------
 # 第二个场地
 def firstMain():
-    '''第一场'''
+    """第一场"""
     # 初始化日志配置
     # 1、初始化（站立，接杆）
     naoInit("NaoOne", IP)
@@ -2346,7 +2346,7 @@ def firstMain():
 
 # 备用方案
 def firstMain2():
-    '''第一场'''
+    """第一场"""
     # 初始化日志配置
     # 1、初始化（站立，接杆）
     naoInit("NaoOne", IP)
@@ -2392,7 +2392,7 @@ def firstMain2():
 
 # 第一个场地
 def secondMain2():
-    '''第二场'''
+    """第二场"""
     # 1、初始化日志配置、加载模块、站立，接杆
     naoInit("NAOTwo", IP)
     times = 0  # 除固定击球以外击球次数
@@ -2432,7 +2432,7 @@ def secondMain2():
 
 # 第二个场地
 def secondMain():
-    '''第二场'''
+    """第二场"""
     # 1、初始化日志配置、加载模块、站立，接杆
     naoInit("NAOTwo", IP)
     # g_tts.say("second")
@@ -2473,7 +2473,7 @@ def secondMain():
 
 
 def secondMainForTest():
-    '''第二场'''
+    """第二场"""
     # 1、初始化日志配置、加载模块、站立，接杆
     naoInit("NAOTwo", IP)
     # g_tts.say("second")
@@ -2514,7 +2514,7 @@ def secondMainForTest():
 
 
 def thirdMain():
-    '''第三场'''
+    """第三场"""
     ## 1、初始化日志配置、加载模块、站立，接杆
     naoInit("NAOThree", IP)
     times = 0  # 除固定击球以外击球次数
@@ -2566,7 +2566,7 @@ def thirdMain():
 
 # 备用
 def thirdMain2():
-    '''第三场'''
+    """第三场"""
     ## 1、初始化日志配置、加载模块、站立，接杆
     naoInit("NAOThree", IP)
     g_tts.say("three 2")
@@ -2763,7 +2763,7 @@ if __name__ == "__main__":
 
 # ---------------------------------一些修改后废弃的方法------------------
 def naoInit_old(logName="no log name", IP="127.0.0.1"):
-    '''开始前机器人的初始化'''
+    """开始前机器人的初始化"""
     try:
         loadModule(IP)
         logConfig(logName)
@@ -2790,7 +2790,7 @@ def naoInit_old(logName="no log name", IP="127.0.0.1"):
 
 
 def naoInit2(logName="no log name", IP="127.0.0.1"):
-    '''开始前机器人的初始化'''
+    """开始前机器人的初始化"""
     try:
         loadModule(IP)
         logConfig(logName)
@@ -2816,8 +2816,8 @@ def naoInit2(logName="no log name", IP="127.0.0.1"):
 
 
 def actionBeforeMove_old():
-    '''   走路前的拿杆动作
-    '''
+    """   走路前的拿杆动作
+    """
     global g_motion
     # 走之前初始化走路
     g_motion.moveInit()
@@ -2833,10 +2833,10 @@ def actionBeforeMove_old():
 
 
 def searchLandmark1():
-    '''
+    """
     搜索Landmark，返回
     :return:landmarkData(角度，距离),isFindLandMark
-    '''
+    """
     global g_motion, g_landmarkDetection, g_camera
     isFindLandmark = False  # landmark识别符0代表识别到，1代表未识别到。
     robotToLandmarkData = []
@@ -2985,13 +2985,13 @@ def getRealDistanceForLandmark1(distance, angle):
 
 
 def afterFindLandMark(angle, distance, limitDistance=1.1):
-    '''
+    """
     找到LandMark后的调整
     :param angle: nao与landmark之间的角度
     :param distance: nao与landmark之间的距离
     :param limitDistance: 需要调整到的距离
     :return:
-    '''
+    """
     global g_motion
     # 正对landmark
     move(0, 0, angle)
@@ -3001,10 +3001,10 @@ def afterFindLandMark(angle, distance, limitDistance=1.1):
 
 
 def afterNotFindLandMark():
-    '''
+    """
     往前走0.2米，继续找landmark
     :return:
-    '''
+    """
     move(x=0.2)
     # 修正
     # move(theta = -0.15)
@@ -3077,9 +3077,9 @@ def outShotBall_old(distance):
 
 
 def firstHitBallForOne_old():
-    '''
+    """
         第一场第一次击球
-    '''
+    """
     global g_motion, g_memory
     # 触摸右手击球
     while True:
@@ -3091,11 +3091,11 @@ def firstHitBallForOne_old():
 
 
 def secondClosingForHitBall(angleForLandMark):
-    '''
+    """
     根据与landmark的角度的正负决定击球方式，
     :param angleForLandMark:
     :return:
-    '''
+    """
     # 1、重新获取距离
     # distance2Ball, headYawAngle, ballCoord = trackBall()
     # move(theta=headYawAngle)
