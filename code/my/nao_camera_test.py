@@ -9,7 +9,7 @@ import random
 import cv2
 
 # IP = '172.16.55.80'
-IP = '192.168.1.192'
+IP = '192.168.1.198'
 Port = 9559
 
 # 步伐参数配置
@@ -54,10 +54,18 @@ def test1():
     name = str(random.random())
     g_motion.angleInterpolationWithSpeed("HeadPitch", 5 * almath.TO_RAD, 0.3)
     # g_motion.angleInterpolationWithSpeed("HeadYaw", 0.0, 0.3)
+
+    # ID , 摄像头 , 像素 , 颜色空间 ,每秒多少帧图片(no more than 30)
     captureDevice = g_camera.subscribeCamera(
         name, AL_kTopCamera, AL_kQVGA, AL_kBGRColorSpace, 10)
 
+
     result = g_camera.getImageRemote(captureDevice)
+    cv2.imshow('result',result[6])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    g_camera.releaseImage(captureDevice)
+    g_camera.unsubscribe(captureDevice)
 
 
 def findRedBallUseTop():
@@ -106,3 +114,5 @@ def findRedBallUseTop():
                     image.itemset((y, x, 2), values[i + 2])
                     i += 3
         cv2.imshow('test',image)
+
+test1()
