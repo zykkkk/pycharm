@@ -5,6 +5,7 @@ import time
 import almath
 from naoqi import ALProxy
 import sys
+import logging
 
 # for i in xrange(7):
 #     print i,
@@ -97,4 +98,61 @@ import sys
 #         break
 # cap.release()
 # cv2.destroyAllWindows()
+
+# a=[-11,2,3,4,5]
+# print max(a,key=lambda x: abs(x))
+
+
+# func = lambda x: x + 1
+# print(func(1))
+# print(func(2))
+#
+#
+# # 以上lambda等同于以下函数
+# def func(x):
+#     return (x + 1)
+
+# a=[[[259,232]], [[259,247]], [[265, 247]], [[265, 232]]]
+# print a[0][0][0]
+# for i in a:
+#     for j in i:
+#         print j
+
+
+# logging.basicConfig(level=logging.DEBUG,
+#                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+#                     datefmt='%a, %d %b %Y %H:%M:%S',
+#                     filename='/tmp/test.log',
+#                     filemode='w')
+# logging.debug('debug message')
+# logging.info('info message')
+# logging.warning('warning message')
+# logging.error('error message')
+# logging.critical('critical message')
+
+# print 4 == 4.
+# if not type(4) == type(4.):
+#     print type(4)
+#     print (type(4.))
+
+print math.pi / 4.
+print 3. * math.pi / 4.0
+print 0.785398163397*180/math.pi  # 45度
+print 2.35619449019*180/math.pi  # 135度
+i=88.9
+# while i <91.1:
+#     print i*math.pi/180
+#     i+=0.1
+print 89*math.pi/180
+print 91*math.pi/180
+print '1.56',int(math.tan(1.56))  # 结果是斜率,数字是弧度 1.56
+print '1.57',int(math.tan(1.57))
+print '1.58',int(math.tan(1.58))
+print math.tan(91)
+
+
+# print 5 and 1
+# print 5 or 0
+# print 1 or 0
+
 

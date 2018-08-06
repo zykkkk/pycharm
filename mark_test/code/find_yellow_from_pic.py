@@ -10,7 +10,7 @@ import sys
 # with 4*4 kernel can find 8 11
 # with no kernel just test8.png cant find
 
-a=2
+a=5
 def mohu(res,x):
     res2 = cv2.blur(res, x)
     # res2 = cv2.dilate(res2, kernel_4, iterations=1)
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # Img = cv2.imread('../../nao_pic/test3.png')
     # Img = cv2.imread('../../nao_pic/test4.png')
     # Img = cv2.imread('../../nao_pic/test6.png')
-    Img = cv2.imread('../pic/%d.png' %a)
+    Img = cv2.imread('../pic/%d.jpg' %a)
     # Img = cv2.imread('../../nao_pic/test8.png')
     # Img = cv2.imread('../../nao_pic/test22.png')
     # Img = cv2.imread('/home/sl/my/pycharm_workspaces/naoproj/find_color/test_picture/yellow.png')  # 读入一幅图像
@@ -57,8 +57,8 @@ if __name__ == '__main__':
         # yellow = [[14, 0, 0], [40, 120, 235]]  # test12.png
         # yellow = [[16, 0, 150], [50, 255, 255]]  # test13.png
         # yellow = [[14, 0, 200], [40, 85, 255]]  #  with 2*2 kernel_4  2*2 kernel 13 14 15 16 17
-        # yellow = [[20, 25, 46], [40, 85, 255]]  #18 19\
-        yellow = [[16, 0, 180], [50, 85, 255]]  # bright 3 4 5 12 13 14 15 16 17 21 22  use 2*2 kernel
+        # yellow = [[20, 25, 46], [40, 85, 255]]  #18 19
+        yellow = [[0, 0, 180], [50, 85, 255]]  # bright 3 4 5 12 13 14 15 16 17 21 22  use 2*2 kernel
         # yellow = [[14, 0, 0], [28, 115, 220]]  # not bright 6 7  use 4*4 kernel
         # yellow = [[14, 0, 0], [40, 115, 220]]  # not bright 8 11 12 18 19   use 4*4 kernel   9 and 10 and 20 dont should find
         # yellow = [[14, 0, 160], [40, 115, 220]]  # for 11
@@ -74,27 +74,15 @@ if __name__ == '__main__':
         # mask是把HSV图片中在颜色范围内的区域变成白色，其他区域变成黑色
         mask = cv2.inRange(HSV, Lower, Upper)
         cv2.imshow('mask', mask)
+        mask = cv2.blur(mask, (3,3))
+        cv2.imshow('blur_mask', mask)
         # 下面四行是用卷积进行滤波
-        erosion = cv2.erode(mask, kernel_4, iterations=1)  # erode 侵蝕 being small
-        erosion = cv2.erode(erosion, kernel_4, iterations=1)
-        dilation = cv2.dilate(erosion, kernel_4, iterations=1)  # 膨脹 being big
-        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
-#
-        dilation = cv2.dilate(erosion, kernel_4, iterations=1)  # 膨脹 being big
-        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
-        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
-        dilation = cv2.dilate(dilation, kernel_4, iterations=1)
-        erosion = cv2.erode(mask, kernel_4, iterations=1)  # erode 侵蝕 being small
-        erosion = cv2.erode(erosion, kernel_4, iterations=1)
-        erosion = cv2.erode(erosion, kernel_4, iterations=1)
-        erosion = cv2.erode(erosion, kernel_4, iterations=1)
-#
         # cv2.imshow('dilation', dilation)
         # target是把原图中的非目标颜色区域去掉剩下的图像
-        target = cv2.bitwise_and(Img, Img, mask=dilation)
+        target = cv2.bitwise_and(Img, Img, mask=mask)
         cv2.imshow('target', target)
         # 将滤波后的图像变成二值图像放在binary中
-        ret, binary = cv2.threshold(dilation, 127, 255, cv2.THRESH_BINARY)
+        ret, binary = cv2.threshold(mask, 127, 255, cv2.THRESH_BINARY)
         # 在binary中发现轮廓，轮廓按照面积从小到大排列 findContours常用来获取轮廓
         contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # cv2.imshow('t',hierarchy)
@@ -104,7 +92,7 @@ if __name__ == '__main__':
             print(cv2.contourArea(i))  #print the size of area
             # time.sleep(1)
             print "I",i
-            time.sleep(3000)
+            # time.sleep(3)
             x, y, w, h = cv2.boundingRect(i)  # 将轮廓分解为识别对象的左上角坐标和宽、高
             # 在图像上画上矩形（图片、左上角坐标、右下角坐标、颜色、线条宽度）
             cv2.rectangle(Img, (x, y), (x + w, y + h), (0, 255,), 3)
@@ -126,8 +114,4 @@ if __name__ == '__main__':
     else:
         print('there is no picture')
         sys.exit(0)
-    while True:
-        Key = chr(cv2.waitKey(15) & 255)
-        if Key == 'q':
-            cv2.destroyAllWindows()
-            break
+    cv2.waitKey(0)
