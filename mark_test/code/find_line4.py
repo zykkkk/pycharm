@@ -2,7 +2,7 @@
 import cv2 as cv
 import math
 
-a = 3
+a = 8
 number = 0
 target = []
 
@@ -23,7 +23,7 @@ def line_detect_possible_demo(image):
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     edges = cv.Canny(gray, 50, 150, apertureSize=3)
     # lines = cv.HoughLinesP(edges, 1, math.pi / 180, 100, minLineLength=50, maxLineGap=10)
-    lines = cv.HoughLinesP(edges, 1, math.pi / 180, 30, minLineLength=10, maxLineGap=100)
+    lines = cv.HoughLinesP(edges, 1, math.pi / 180, 30, minLineLength=2, maxLineGap=100)
 
     # print lines
     print len(lines[0])
@@ -43,7 +43,7 @@ def line_detect_possible_demo(image):
             # cv.waitKey(0)
 
 
-img = cv.imread("../mypic/%d.jpg" % a)
+img = cv.imread("../pic/%d.jpg" % a)
 cv.namedWindow("Show", cv.WINDOW_AUTOSIZE)
 cv.imshow("Show", img)
 line_detect_possible_demo(img)

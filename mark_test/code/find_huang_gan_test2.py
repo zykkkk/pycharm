@@ -280,19 +280,21 @@ if __name__ == '__main__':
     # cv2.imwrite('../pic/8.jpg',img0)
     # find_yellow(img0)
     # exit(0)
-    b = 2  # 可以看到全部的黄杆
+    b = 70  # 可以看到全部的黄杆
     # b = 40  # 看到部分的黄杆
     # img0 = cv2.imread("../pic/%d.jpg" % a)
     img = cv2.cvtColor(img0, cv2.COLOR_BGR2GRAY)  # 貌似可加可不加
     # img = cv2.GaussianBlur(img, (3, 3), 0)
     edges = cv2.Canny(img, 50, 150, apertureSize=3)
     lines = cv2.HoughLines(edges, 1, math.pi / 180, b)  # 这里对最后一个参数(最小的像素点数)使用了经验型的值
+    print('length lines',len(lines))
     result = img.copy()
     cv2.imshow('Canny', edges)
     cv2.setMouseCallback('Canny', my_event)
     ptt = []
     print result.shape  # 返回宽,长,3
-    for line in lines[0]:
+    for line in lines:
+        line=line[0]
         rho = line[0]  # 第一个元素是距离rho
         theta = line[1]  # 第二个元素是角度theta 极角,弧度
         jiao = abs(theta / math.pi * 180)
