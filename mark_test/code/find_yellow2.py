@@ -96,13 +96,16 @@ def select_yellow(Img,yellow):
         else:
             print('yellow == yellow3')
             yellow, x, y, w, h = find_yellow(Img, yellow1)
-        if x - (x0 + w0) <= 1 or (x0 + w0) - (x + w) <= 1:  # 先检测到的再左边 or 先检测到的再右边
+        if (x - (x0 + w0) <= 1 or (x0 + w0) - (x + w) <= 1) and abs(h-h0)<=10:  # 先检测到的再左边 or 先检测到的再右边
+            print('h,h0',h,h0)
             x = min(x, x0)
             y = min(y, y0)
             w = w0 + w
             print('x y w 修正结束', x, y, w)
         else:
             print('无需修正')
+            x,y,w,h=x0, y0, w0, h0
+            print('x,y,w,h',x,y,w,h)
         c = 0
     else:
         print('yellow not in  yellow1&3', yellow)
