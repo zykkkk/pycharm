@@ -21,7 +21,7 @@ from naoqi import ALProxy
 a = 1
 n=0
 yellow = [[16, 0, 180], [50, 85, 255]]
-yellow = [[14, 0, 0], [40, 255, 250]]
+# yellow = [[14, 0, 0], [40, 255, 250]]
 Img = cv2.imread('../pic/%d.jpg' % a)
 
 
@@ -48,9 +48,10 @@ H(26-35) S(77-255) V(46-255)
     # 将滤波后的图像变成二值图像放在binary中
     ret, binary = cv2.threshold(dilation, 127, 255, cv2.THRESH_BINARY)
     # 在binary中发现轮廓，轮廓按照面积从小到大排列 findContours常用来获取轮廓
-    contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    image,contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     # cv2.imshow('t',hierarchy)
     # time.sleep(3)
+    print(len(contours))
     area = contours[0]
     for i in contours:  # 遍历所有的轮廓
         #  --------------------重点修改，根据杆子宽，高，区域面积大小，位置(下边那段)，找出杆子

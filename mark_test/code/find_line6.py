@@ -3,9 +3,9 @@
 import cv2
 import numpy as np
 
-a = 8
+a = 3
 n1 = n2 = 1
-length_of_line = 70
+length_of_line = 40
 y=[-20,-40]
 x=[0,0]
 lines=[]
@@ -38,7 +38,18 @@ while lines_num != 2 or 5 <= abs(y[0]-y[1]):
     nums=lines_num=0
     print('there')
     lines = cv2.HoughLinesP(edges, 1, np.pi / 180, length_of_line, maxLineGap=20)
+    print(lines)
     length_of_line += 1
+    if lines is None:
+        if length_of_line <=120:
+            print('None',length_of_line)
+            continue
+        else:
+            print('length of line error ')
+            exit(-1)
+    # if len(lines)>=2:
+    #     cv2.waitKey(0)
+    print('len lines',len(lines))
     for line in lines:
         x1, y1, x2, y2 = line[0]
         theta = abs((y2 - y1) / (x2 - x1))
@@ -55,12 +66,15 @@ while lines_num != 2 or 5 <= abs(y[0]-y[1]):
             print('x1,y1,x2,y2',x1,y1,x2,y2)
             cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
             lines_num+=1
-            # cv2.imshow('img',img)
-            # cv2.waitKey(0)
+            cv2.imshow('img',img)
+            cv2.waitKey(0)
     print('y[0],y[1]',y[0],y[1])
     if length_of_line >= 120:
         print('length_of_line error')
+        cv2.waitKey(0)
         exit(-1)
+    else:
+        print('length of line',length_of_line)
 print('len lines',len(lines))
 # cv2.waitKey(200)
 # The below for loop runs till r and theta values

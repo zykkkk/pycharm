@@ -18,7 +18,7 @@ from naoqi import ALProxy
 # 单个区域，但是有其他物体扩大了杆子的宽，选取有颜色区域最下方的40px
 # 根据杆子的宽宽来过滤，
 
-a = 8
+a = 1
 n = 0
 Img = cv2.imread('../pic/%d.jpg' % a)
 
@@ -26,7 +26,7 @@ yellow = [[16, 0, 180], [50, 85, 255]]
 yellow2 = [[14, 0, 0], [40, 115, 220]]  # not bright
 yellow3 = [[26, 77, 46], [35, 255, 255]]
 white = [[50, 0, 221], [180, 30, 255]]  # new white's lower and upper
-yellow = yellow2
+# yellow = yellow2
 # yellow=yellow3
 
 times = 1
@@ -53,7 +53,7 @@ def find_yellow(Img):
         # 将滤波后的图像变成二值图像放在binary中
         ret, binary = cv2.threshold(dilation, 127, 255, cv2.THRESH_BINARY)
         # 在binary中发现轮廓，轮廓按照面积从小到大排列 findContours常用来获取轮廓
-        contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        image,contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # cv2.imshow('t',hierarchy)
         # time.sleep(3)
 
@@ -65,7 +65,7 @@ def find_yellow(Img):
                     area = i
             x, y, w, h = cv2.boundingRect(area)
             print 'x,y,w,h',x,y,w,h
-            if w <= 10 or w >= 50 or h < 20 or h > 50:
+            if w <= 10 or w >= 50 or h < 20 or h > 150:
                 if times == 1:
                     yellow = yellow2  # 改变了HSV颜色空间,此处的yellow不可删除
                     times += 1

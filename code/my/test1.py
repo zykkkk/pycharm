@@ -135,20 +135,20 @@ import logging
 #     print type(4)
 #     print (type(4.))
 
-print math.pi / 4.
-print 3. * math.pi / 4.0
-print 0.785398163397*180/math.pi  # 45度
-print 2.35619449019*180/math.pi  # 135度
-i=88.9
-# while i <91.1:
-#     print i*math.pi/180
-#     i+=0.1
-print 89*math.pi/180
-print 91*math.pi/180
-print '1.56',int(math.tan(1.56))  # 结果是斜率,数字是弧度 1.56
-print '1.57',int(math.tan(1.57))
-print '1.58',int(math.tan(1.58))
-print math.tan(91)
+# print math.pi / 4.
+# print 3. * math.pi / 4.0
+# print 0.785398163397*180/math.pi  # 45度
+# print 2.35619449019*180/math.pi  # 135度
+# i=88.9
+# # while i <91.1:
+# #     print i*math.pi/180
+# #     i+=0.1
+# print 89*math.pi/180
+# print 91*math.pi/180
+# print '1.56',int(math.tan(1.56))  # 结果是斜率,数字是弧度 1.56
+# print '1.57',int(math.tan(1.57))
+# print '1.58',int(math.tan(1.58))
+# print math.tan(91)
 
 
 # print 5 and 1
@@ -156,3 +156,16 @@ print math.tan(91)
 # print 1 or 0
 
 
+# def a():
+#     return 3
+# def b():
+#     return a()
+# print(b())
+
+
+x=1
+if 1:
+    for i in range(2):
+        x=0
+        x+=2
+print(x)  # 改变了x

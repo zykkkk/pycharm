@@ -73,17 +73,17 @@ def get_pic():
 def my_event(event, x, y, flags, param):
     if event == cv2.EVENT_FLAG_LBUTTON:
         try:
-            print x,y
+            print x, y
             print ptt
             print targetx_end
-        except Exception,e:
+        except Exception, e:
             print(e)
 
 
 def paixu(target):
     for i in range(len(target)):
         for j in range(len(target)):
-            if target[i][1][0] < target[j][1][0]:
+            if max(target[i][1][0], target[i][0][0]) < (max(target[j][1][0], target[j][0][0])):
                 new = target[i]
                 target[i] = target[j]
                 target[j] = new
@@ -97,16 +97,29 @@ def calc(targetx):
     paixu(targetx)
     print '排序 targetx', targetx
     # b = []
+    targetx_end_ready = []
     t = targetx[0]
     print t
     for i in targetx:
         # print 'i',i
-        if 0 <= i[1][0] - t[1][0] <= 3:
+        if 0 <= abs(max(i[1][0], i[0][0]) - max(t[1][0], t[0][0])) <= 3:
             t = i
         else:
-            targetx_end.append(t)
+            targetx_end_ready.append(t)
             t = i
-    targetx_end.append(t)
+    targetx_end_ready.append(t)
+    t = targetx_end_ready[0]
+    for i in targetx_end_ready:
+        # print 'i',i
+        if abs(max(i[1][0], i[0][0]) - max(t[1][0], t[0][0])) <= 30:
+            t = i
+            targetx_end.append(t)
+        else:
+            t = i
+    # targetx_end.append(t)
+    print('target_end_ready', targetx_end_ready)
+    print('target_end', targetx_end)
+    # exit()
 
 
 def find_yellow(Img, yellow):
@@ -135,7 +148,7 @@ def find_yellow(Img, yellow):
     # 将滤波后的图像变成二值图像放在binary中
     ret, binary = cv2.threshold(dilation, 127, 255, cv2.THRESH_BINARY)
     # 在binary中发现轮廓，轮廓按照面积从小到大排列 findContours常用来获取轮廓
-    contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    image, contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     # cv2.imshow('t',hierarchy)
     # time.sleep(3)
     area = contours[0]
@@ -179,6 +192,16 @@ def find_yellow(Img, yellow):
             times = 1
             print '调用　３　'
             area, x, y, w, h = find_yellow(Img, yellow1)
+    # if yellow == yellow1 or yellow == yellow3:
+    #     x0,y0, w0,h0= x,y, w,h
+    #     if yellow == yellow1:
+    #         area, x, y, w, h = find_yellow(Img, yellow3)
+    #     else:
+    #         area, x, y, w, h = find_yellow(Img, yellow1)
+    #     if abs(x - (x0 + w0)) <= 1 or abs((x0 + w0) - (x + w)) <= 1:  # 先检测到的再左边 or 先检测到的再右边
+    #         x = min(x, x0)
+    #         y=min(y,y0)
+    #         w = w0 + w
     if w > 20 and abs(w - w1) > 5:
         print 'w', w
         w1 = w
@@ -190,7 +213,7 @@ def find_yellow(Img, yellow):
             # cv2.rectangle(target, (x, y), (x + w, y + h), (0, 255, 0), 1)
             # Img1=Img[x:x+w,y+h/7:y+5*h/7]
             cv2.imshow('test Img1', Img1)
-            cv2.waitKey(0)
+            # cv2.waitKey(0)
             print '调用　４　'
             area1, x1, y1, w1, h1 = find_yellow(Img1, yellow)
             print 'w1', w1
@@ -267,13 +290,13 @@ def cal_num(targetx_end):
 
 if __name__ == '__main__':
     yellow1 = [[16, 0, 180], [50, 85, 255]]  # bright
-    yellow2 = [[14, 0, 0], [40, 115, 220]]  # not bright
-    yellow3 = [[26, 77, 46], [35, 255, 255]]
+    yellow2 = [[14, 0, 0], [40, 115, 220]]  # inside bright and not bright
+    yellow3 = [[26, 77, 46], [35, 255, 255]]  # not bright
     white = [[0, 0, 221], [180, 30, 255]]  # new white's lower and upper
     # yellow = white
     times = 1
     n = 0
-    image_num = 8
+    image_num = 2
     img0 = cv2.imread("../pic/%d.jpg" % image_num)  # 使用本地图片
     # init();img0=get_pic()  # 使用机器人
     cv2.imshow('img0', img0)
@@ -287,19 +310,19 @@ if __name__ == '__main__':
     # img = cv2.GaussianBlur(img, (3, 3), 0)
     edges = cv2.Canny(img, 50, 150, apertureSize=3)
     lines = cv2.HoughLines(edges, 1, math.pi / 180, b)  # 这里对最后一个参数(最小的像素点数)使用了经验型的值
-    print('length lines',len(lines))
+    print('length lines', len(lines))
     result = img.copy()
     cv2.imshow('Canny', edges)
     cv2.setMouseCallback('Canny', my_event)
     ptt = []
     print result.shape  # 返回宽,长,3
     for line in lines:
-        line=line[0]
+        line = line[0]
         rho = line[0]  # 第一个元素是距离rho
         theta = line[1]  # 第二个元素是角度theta 极角,弧度
         jiao = abs(theta / math.pi * 180)
-        if (theta < (math.pi / 4.)) or (theta > (3. * math.pi / 4.0)):  # 垂直直线 　
-            # if (theta < 0.78) or (theta > 2.35):  # 垂直直线　　在45度到135度之间的直线
+        # if (theta < (math.pi / 4.)) or (theta > (3. * math.pi / 4.0)):  # 垂直直线 　
+        if (theta < 0.80) or (theta > 2.50):  # 垂直直线　　在45度到135度之间的直线
             # if (theta < 0.01) or (theta > 3.11):  # 垂直直线  theta 的线条与目标直线垂直,此处的0.01和3.11请查看test1.py
             print 'jiao', round(jiao, 5), theta, math.pi / 4, 3 * math.pi / 4.0
             # if jiao <=2:  # 垂直直线
@@ -326,7 +349,7 @@ if __name__ == '__main__':
             # cv2.waitKey(4000)
     cv2.imshow('Result', result)
     cv2.setMouseCallback('Result', my_event)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
     print 'len ptt', len(ptt), ptt
     targetx_end = []
     calc(ptt)

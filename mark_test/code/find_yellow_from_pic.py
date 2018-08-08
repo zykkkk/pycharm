@@ -10,7 +10,7 @@ import sys
 # with 4*4 kernel can find 8 11
 # with no kernel just test8.png cant find
 
-a=5
+a=1
 def mohu(res,x):
     res2 = cv2.blur(res, x)
     # res2 = cv2.dilate(res2, kernel_4, iterations=1)
@@ -54,11 +54,11 @@ if __name__ == '__main__':
         # yellow = [[0, 0, 170], [180, 30, 255]]  # test3.png
         # yellow = [[0, 0, 0], [28, 70, 255]]  # test4.png test5.png test6.png
         # yellow = [[16, 0, 0], [50, 160, 150]]  # test7.png test8.png test11.png
-        # yellow = [[14, 0, 0], [40, 120, 235]]  # test12.png
+        yellow = [[14, 0, 0], [40, 120, 235]]  # test12.png
         # yellow = [[16, 0, 150], [50, 255, 255]]  # test13.png
         # yellow = [[14, 0, 200], [40, 85, 255]]  #  with 2*2 kernel_4  2*2 kernel 13 14 15 16 17
         # yellow = [[20, 25, 46], [40, 85, 255]]  #18 19
-        yellow = [[0, 0, 180], [50, 85, 255]]  # bright 3 4 5 12 13 14 15 16 17 21 22  use 2*2 kernel
+        # yellow = [[0, 0, 180], [50, 85, 255]]  # bright 3 4 5 12 13 14 15 16 17 21 22  use 2*2 kernel
         # yellow = [[14, 0, 0], [28, 115, 220]]  # not bright 6 7  use 4*4 kernel
         # yellow = [[14, 0, 0], [40, 115, 220]]  # not bright 8 11 12 18 19   use 4*4 kernel   9 and 10 and 20 dont should find
         # yellow = [[14, 0, 160], [40, 115, 220]]  # for 11
@@ -84,7 +84,7 @@ if __name__ == '__main__':
         # 将滤波后的图像变成二值图像放在binary中
         ret, binary = cv2.threshold(mask, 127, 255, cv2.THRESH_BINARY)
         # 在binary中发现轮廓，轮廓按照面积从小到大排列 findContours常用来获取轮廓
-        contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        image,contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         # cv2.imshow('t',hierarchy)
         # time.sleep(3)
         p = 0
